@@ -22,6 +22,9 @@ type List[E any, C Component] struct {
 
 func (list *List[E, C]) init() {
 	list.once.Do(func() {
+		// TODO: This leaks memory. Unfortunately, it seems like Fyne
+		// probably does the same, so there's little that I think that I
+		// can do about it.
 		components := make(map[fyne.CanvasObject]C)
 
 		// TODO: Move this into Bind().
