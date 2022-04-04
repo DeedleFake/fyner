@@ -112,7 +112,6 @@ type Box struct {
 func (b *Box) init() {
 	b.once.Do(func() {
 		horizontal := state.Static(layout.NewVBoxLayout())
-		// TODO: Move this into Bind().
 		if b.Horizontal != nil {
 			horizontal = state.Derived(b.Horizontal, func(h bool) fyne.Layout {
 				if h {

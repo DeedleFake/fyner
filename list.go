@@ -52,6 +52,8 @@ func (list *List[E, C]) CanvasObject() fyne.CanvasObject {
 }
 
 func (list *List[E, C]) Bind() {
+	list.init()
+	list.Unbind()
 }
 
 func (list *List[E, C]) Unbind() {
