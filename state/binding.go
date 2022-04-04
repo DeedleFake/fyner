@@ -30,6 +30,9 @@ func (b fromBinding[T]) Listen(f func(T)) CancelFunc {
 		f(b.Get())
 	})
 	b.b.AddListener(lis)
+
+	f(b.Get())
+
 	return func() {
 		b.b.RemoveListener(lis)
 	}
