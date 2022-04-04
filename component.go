@@ -8,8 +8,8 @@ import (
 type Component interface {
 	CanvasObject() fyne.CanvasObject
 
-	Bind()
-	Unbind()
+	//Bind()
+	//Unbind()
 }
 
 func Content(c Component) fyne.CanvasObject {

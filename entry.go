@@ -37,11 +37,11 @@ func (entry *Entry) CanvasObject() fyne.CanvasObject {
 	return entry.w
 }
 
-func (entry *Entry) Bind() {
-	entry.init()
-	entry.bind()
-}
-
-func (entry *Entry) Unbind() {
-	cancel(&entry.textCancel)
-}
+//func (entry *Entry) Bind() {
+//	entry.init()
+//	entry.bind()
+//}
+//
+//func (entry *Entry) Unbind() {
+//	cancel(&entry.textCancel)
+//}

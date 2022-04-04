@@ -44,14 +44,14 @@ func (c *Container) CanvasObject() fyne.CanvasObject {
 	return c.w
 }
 
-func (c *Container) Bind() {
-	c.init()
-	c.bind()
-}
-
-func (c *Container) Unbind() {
-	cancel(&c.layoutCancel)
-}
+//func (c *Container) Bind() {
+//	c.init()
+//	c.bind()
+//}
+//
+//func (c *Container) Unbind() {
+//	cancel(&c.layoutCancel)
+//}
 
 type Center struct {
 	once sync.Once
@@ -74,14 +74,14 @@ func (c *Center) CanvasObject() fyne.CanvasObject {
 	return c.c.CanvasObject()
 }
 
-func (c *Center) Bind() {
-	c.init()
-	c.c.Bind()
-}
-
-func (c *Center) Unbind() {
-	c.c.Unbind()
-}
+//func (c *Center) Bind() {
+//	c.init()
+//	c.c.Bind()
+//}
+//
+//func (c *Center) Unbind() {
+//	c.c.Unbind()
+//}
 
 type Box struct {
 	once sync.Once
@@ -111,11 +111,11 @@ func (b *Box) CanvasObject() fyne.CanvasObject {
 	return b.c.CanvasObject()
 }
 
-func (b *Box) Bind() {
-	b.init()
-	b.c.Bind()
-}
-
-func (b *Box) Unbind() {
-	b.c.Unbind()
-}
+//func (b *Box) Bind() {
+//	b.init()
+//	b.c.Bind()
+//}
+//
+//func (b *Box) Unbind() {
+//	b.c.Unbind()
+//}

@@ -38,11 +38,11 @@ func (button *Button) CanvasObject() fyne.CanvasObject {
 	return button.w
 }
 
-func (button *Button) Bind() {
-	button.init()
-	button.bind()
-}
-
-func (button *Button) Unbind() {
-	cancel(&button.textCancel)
-}
+//func (button *Button) Bind() {
+//	button.init()
+//	button.bind()
+//}
+//
+//func (button *Button) Unbind() {
+//	cancel(&button.textCancel)
+//}

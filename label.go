@@ -36,11 +36,11 @@ func (label *Label) CanvasObject() fyne.CanvasObject {
 	return label.w
 }
 
-func (label *Label) Bind() {
-	label.init()
-	label.bind()
-}
-
-func (label *Label) Unbind() {
-	cancel(&label.textCancel)
-}
+//func (label *Label) Bind() {
+//	label.init()
+//	label.bind()
+//}
+//
+//func (label *Label) Unbind() {
+//	cancel(&label.textCancel)
+//}
