@@ -30,6 +30,9 @@ func (c *Container) init() {
 	c.once.Do(func() {
 		objects := make([]fyne.CanvasObject, 0, len(c.Children))
 		for _, child := range c.Children {
+			if child == nil {
+				continue
+			}
 			objects = append(objects, child.CanvasObject())
 		}
 		c.w = container.NewWithoutLayout(objects...)
