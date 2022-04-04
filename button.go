@@ -8,13 +8,16 @@ import (
 	"github.com/DeedleFake/fyner/state"
 )
 
+// Button wraps widget.Button to provide a button component.
 type Button struct {
 	once sync.Once
 	w    *widget.Button
 
+	// Text is the text label displayed on the button.
 	Text       state.State[string]
 	textCancel state.CancelFunc
 
+	// OnTapped is called when the button is tapped/clicked on.
 	OnTapped func()
 }
 

@@ -5,6 +5,7 @@ import (
 	"github.com/DeedleFake/fyner/state"
 )
 
+// Component is the interface shared by all Fyner components.
 type Component interface {
 	CanvasObject() fyne.CanvasObject
 
@@ -16,6 +17,7 @@ func Content(c Component) fyne.CanvasObject {
 	return c.CanvasObject()
 }
 
+// cancel calls *f if it isn't nil and then sets it to nil.
 func cancel(f *state.CancelFunc) {
 	if *f != nil {
 		(*f)()

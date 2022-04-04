@@ -8,10 +8,15 @@ import (
 	"github.com/DeedleFake/fyner/state"
 )
 
+// Entry wraps widget.Entry to provide a text entry component.
+//
+// TODO: Make sure that this API works correctly for strange cases
+// like only allowing uppercase letters.
 type Entry struct {
 	once sync.Once
 	w    *widget.Entry
 
+	// Text is the editable text currently in the entry.
 	Text       state.MutableState[string]
 	textCancel state.CancelFunc
 }

@@ -9,13 +9,17 @@ import (
 	"github.com/DeedleFake/fyner/state"
 )
 
+// Container wraps fyne.Container to provide a container component.
 type Container struct {
 	once sync.Once
 	w    *fyne.Container
 
+	// Layout is the layout of the children in the container.
 	Layout       state.State[fyne.Layout]
 	layoutCancel state.CancelFunc
 
+	// Children is the children in the container. They are displayed
+	// according to the value of Layout.
 	Children []Component
 }
 
@@ -53,6 +57,10 @@ func (c *Container) CanvasObject() fyne.CanvasObject {
 //	cancel(&c.layoutCancel)
 //}
 
+// Center is a container with the Center layout. Unlike the Fyne
+// version, it only holds a single child component. To replicate
+// Fyne's Center's stacking behavior, use a Container with a center
+// layout manually.
 type Center struct {
 	once sync.Once
 	c    *Container
@@ -83,10 +91,14 @@ func (c *Center) CanvasObject() fyne.CanvasObject {
 //	c.c.Unbind()
 //}
 
+// Box is a container that displays components in either a row or a
+// column. In other words, it wraps both the HBox and VBox layouts.
 type Box struct {
 	once sync.Once
 	c    *Container
 
+	// Horizontal, if true, results in a row rather than a column. If
+	// Horizontal is nil, it is treated as though it were false.
 	Horizontal state.State[bool]
 
 	Children []Component

@@ -8,6 +8,8 @@ import (
 	"github.com/DeedleFake/fyner/state"
 )
 
+// Label wraps widget.Label to provide a simple read-only text
+// component.
 type Label struct {
 	once sync.Once
 	w    *widget.Label
