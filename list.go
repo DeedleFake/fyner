@@ -38,7 +38,6 @@ func (list *List[E, C]) init() {
 				n.Unbind()
 				list.Binder(state.FromBinding[E](b.(state.Binding[E])), n)
 				n.Bind()
-				components[o] = n
 			},
 		)
 	})
