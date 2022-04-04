@@ -28,11 +28,18 @@ type Button struct {
 func (button *Button) init() {
 	button.once.Do(func() {
 		button.w = widget.NewButton("", button.OnTapped)
-		button.bind()
 	})
 }
 
-func (button *Button) bind() {
+func (button *Button) CanvasObject() fyne.CanvasObject {
+	button.init()
+	return button.w
+}
+
+func (button *Button) Bind() {
+	button.init()
+	button.Unbind()
+
 	if button.Text != nil {
 		button.textCancel = button.Text.Listen(button.w.SetText)
 	}
@@ -48,16 +55,6 @@ func (button *Button) bind() {
 	}
 }
 
-func (button *Button) CanvasObject() fyne.CanvasObject {
-	button.init()
-	return button.w
+func (button *Button) Unbind() {
+	cancel(&button.textCancel)
 }
-
-//func (button *Button) Bind() {
-//	button.init()
-//	button.bind()
-//}
-//
-//func (button *Button) Unbind() {
-//	cancel(&button.textCancel)
-//}

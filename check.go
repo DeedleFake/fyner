@@ -24,11 +24,18 @@ type Check struct {
 func (check *Check) init() {
 	check.once.Do(func() {
 		check.w = widget.NewCheck("", nil)
-		check.bind()
 	})
 }
 
-func (check *Check) bind() {
+func (check *Check) CanvasObject() fyne.CanvasObject {
+	check.init()
+	return check.w
+}
+
+func (check *Check) Bind() {
+	check.init()
+	check.Unbind()
+
 	if check.Text != nil {
 		check.textCancel = check.Text.Listen(func(v string) {
 			check.w.Text = v
@@ -42,7 +49,7 @@ func (check *Check) bind() {
 	}
 }
 
-func (check *Check) CanvasObject() fyne.CanvasObject {
-	check.init()
-	return check.w
+func (check *Check) Unbind() {
+	cancel(&check.textCancel)
+	cancel(&check.checkedCancel)
 }

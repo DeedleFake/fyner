@@ -21,14 +21,7 @@ type Label struct {
 func (label *Label) init() {
 	label.once.Do(func() {
 		label.w = widget.NewLabel("")
-		label.bind()
 	})
-}
-
-func (label *Label) bind() {
-	if label.Text != nil {
-		label.textCancel = label.Text.Listen(label.w.SetText)
-	}
 }
 
 func (label *Label) CanvasObject() fyne.CanvasObject {
@@ -36,11 +29,15 @@ func (label *Label) CanvasObject() fyne.CanvasObject {
 	return label.w
 }
 
-//func (label *Label) Bind() {
-//	label.init()
-//	label.bind()
-//}
-//
-//func (label *Label) Unbind() {
-//	cancel(&label.textCancel)
-//}
+func (label *Label) Bind() {
+	label.init()
+	label.Unbind()
+
+	if label.Text != nil {
+		label.textCancel = label.Text.Listen(label.w.SetText)
+	}
+}
+
+func (label *Label) Unbind() {
+	cancel(&label.textCancel)
+}

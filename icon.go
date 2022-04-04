@@ -20,15 +20,21 @@ type Icon struct {
 func (icon *Icon) init() {
 	icon.once.Do(func() {
 		icon.w = widget.NewIcon(state.Get(icon.Resource))
-		icon.bind()
 	})
-}
-
-func (icon *Icon) bind() {
-	icon.resourceCancel = icon.Resource.Listen(icon.w.SetResource)
 }
 
 func (icon *Icon) CanvasObject() fyne.CanvasObject {
 	icon.init()
 	return icon.w
+}
+
+func (icon *Icon) Bind() {
+	icon.init()
+	icon.Unbind()
+
+	icon.resourceCancel = icon.Resource.Listen(icon.w.SetResource)
+}
+
+func (icon *Icon) Unbind() {
+	cancel(&icon.resourceCancel)
 }

@@ -33,14 +33,22 @@ func (c *Container) init() {
 			if child == nil {
 				continue
 			}
+			child.Bind()
 			objects = append(objects, child.CanvasObject())
 		}
 		c.w = container.NewWithoutLayout(objects...)
-		c.bind()
 	})
 }
 
-func (c *Container) bind() {
+func (c *Container) CanvasObject() fyne.CanvasObject {
+	c.init()
+	return c.w
+}
+
+func (c *Container) Bind() {
+	c.init()
+	c.Unbind()
+
 	if c.Layout != nil {
 		c.layoutCancel = c.Layout.Listen(func(v fyne.Layout) {
 			c.w.Layout = v
@@ -49,19 +57,9 @@ func (c *Container) bind() {
 	}
 }
 
-func (c *Container) CanvasObject() fyne.CanvasObject {
-	c.init()
-	return c.w
+func (c *Container) Unbind() {
+	cancel(&c.layoutCancel)
 }
-
-//func (c *Container) Bind() {
-//	c.init()
-//	c.bind()
-//}
-//
-//func (c *Container) Unbind() {
-//	cancel(&c.layoutCancel)
-//}
 
 // Center is a container with the Center layout. Unlike the Fyne
 // version, it only holds a single child component. To replicate
@@ -88,14 +86,15 @@ func (c *Center) CanvasObject() fyne.CanvasObject {
 	return c.c.CanvasObject()
 }
 
-//func (c *Center) Bind() {
-//	c.init()
-//	c.c.Bind()
-//}
-//
-//func (c *Center) Unbind() {
-//	c.c.Unbind()
-//}
+func (c *Center) Bind() {
+	c.init()
+	c.c.Bind()
+}
+
+func (c *Center) Unbind() {
+	c.init()
+	c.c.Unbind()
+}
 
 // Box is a container that displays components in either a row or a
 // column. In other words, it wraps both the HBox and VBox layouts.
@@ -113,6 +112,7 @@ type Box struct {
 func (b *Box) init() {
 	b.once.Do(func() {
 		horizontal := state.Static(layout.NewVBoxLayout())
+		// TODO: Move this into Bind().
 		if b.Horizontal != nil {
 			horizontal = state.Derived(b.Horizontal, func(h bool) fyne.Layout {
 				if h {
@@ -134,14 +134,15 @@ func (b *Box) CanvasObject() fyne.CanvasObject {
 	return b.c.CanvasObject()
 }
 
-//func (b *Box) Bind() {
-//	b.init()
-//	b.c.Bind()
-//}
-//
-//func (b *Box) Unbind() {
-//	b.c.Unbind()
-//}
+func (b *Box) Bind() {
+	b.init()
+	b.c.Bind()
+}
+
+func (b *Box) Unbind() {
+	b.init()
+	b.c.Unbind()
+}
 
 type Border struct {
 	once sync.Once
@@ -180,4 +181,14 @@ func (b *Border) init() {
 func (b *Border) CanvasObject() fyne.CanvasObject {
 	b.init()
 	return b.c.CanvasObject()
+}
+
+func (b *Border) Bind() {
+	b.init()
+	b.c.Bind()
+}
+
+func (b *Border) Unbind() {
+	b.init()
+	b.c.Unbind()
 }

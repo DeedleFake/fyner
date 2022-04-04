@@ -24,13 +24,7 @@ type Entry struct {
 func (entry *Entry) init() {
 	entry.once.Do(func() {
 		entry.w = widget.NewEntry()
-		entry.bind()
 	})
-}
-
-func (entry *Entry) bind() {
-	entry.textCancel = entry.Text.Listen(entry.w.SetText)
-	entry.w.OnChanged = entry.Text.Set
 }
 
 func (entry *Entry) CanvasObject() fyne.CanvasObject {
@@ -38,11 +32,15 @@ func (entry *Entry) CanvasObject() fyne.CanvasObject {
 	return entry.w
 }
 
-//func (entry *Entry) Bind() {
-//	entry.init()
-//	entry.bind()
-//}
-//
-//func (entry *Entry) Unbind() {
-//	cancel(&entry.textCancel)
-//}
+func (entry *Entry) Bind() {
+	entry.init()
+	entry.Unbind()
+
+	entry.textCancel = entry.Text.Listen(entry.w.SetText)
+	entry.w.OnChanged = entry.Text.Set
+}
+
+func (entry *Entry) Unbind() {
+	cancel(&entry.textCancel)
+	entry.w.OnChanged = nil
+}

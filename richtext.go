@@ -21,17 +21,23 @@ type RichText struct {
 func (rt *RichText) init() {
 	rt.once.Do(func() {
 		rt.w = widget.NewRichText()
-		rt.bind()
 	})
-}
-
-func (rt *RichText) bind() {
-	if rt.Markdown != nil {
-		rt.markdownCancel = rt.Markdown.Listen(rt.w.ParseMarkdown)
-	}
 }
 
 func (rt *RichText) CanvasObject() fyne.CanvasObject {
 	rt.init()
 	return rt.w
+}
+
+func (rt *RichText) Bind() {
+	rt.init()
+	rt.Unbind()
+
+	if rt.Markdown != nil {
+		rt.markdownCancel = rt.Markdown.Listen(rt.w.ParseMarkdown)
+	}
+}
+
+func (rt *RichText) Unbind() {
+	cancel(&rt.markdownCancel)
 }

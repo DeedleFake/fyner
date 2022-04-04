@@ -9,11 +9,14 @@ import (
 type Component interface {
 	CanvasObject() fyne.CanvasObject
 
-	//Bind()
-	//Unbind()
+	Bind()
+	Unbind()
 }
 
+// Content binds c to its state and then returns a CanvasObject that
+// can be used to place c into a standard Fyne widget tree.
 func Content(c Component) fyne.CanvasObject {
+	c.Bind()
 	return c.CanvasObject()
 }
 
