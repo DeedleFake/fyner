@@ -46,37 +46,24 @@ func (b fromBinding[T]) Get() T {
 
 type dataItem[T any] struct {
 	s State[T]
-
-	m   sync.Mutex
-	lis map[binding.DataListener]CancelFunc
+	m sync.Map
 }
 
 // ToBinding creates a Binding from a State.
 func ToBinding[T any](s State[T]) Binding[T] {
 	return &dataItem[T]{
-		s:   s,
-		lis: make(map[binding.DataListener]CancelFunc),
+		s: s,
 	}
 }
 
 func (item *dataItem[T]) AddListener(lis binding.DataListener) {
-	item.m.Lock()
-	defer item.m.Unlock()
-
-	item.lis[lis] = item.s.Listen(func(T) {
+	item.m.Store(lis, func(T) {
 		lis.DataChanged()
 	})
 }
 
 func (item *dataItem[T]) RemoveListener(lis binding.DataListener) {
-	item.m.Lock()
-	defer item.m.Unlock()
-
-	cancel := item.lis[lis]
-	if cancel != nil {
-		cancel()
-	}
-	delete(item.lis, lis)
+	item.m.Delete(lis)
 }
 
 func (item *dataItem[T]) Get() (T, error) {
@@ -92,38 +79,25 @@ func (item *dataItem[T]) Set(v T) error {
 
 type dataList[T any, S State[T], L ~[]S] struct {
 	s State[L]
-
-	m   sync.Mutex
-	lis map[binding.DataListener]CancelFunc
+	m sync.Map
 }
 
 // ToListBinding creates a binding.DataList from a State containing a
 // slice of States.
 func ToListBinding[T any, S State[T], L ~[]S](s State[L]) binding.DataList {
 	return &dataList[T, S, L]{
-		s:   s,
-		lis: make(map[binding.DataListener]CancelFunc),
+		s: s,
 	}
 }
 
 func (list *dataList[T, S, L]) AddListener(lis binding.DataListener) {
-	list.m.Lock()
-	defer list.m.Unlock()
-
-	list.lis[lis] = list.s.Listen(func(L) {
+	list.m.Store(lis, func(L) {
 		lis.DataChanged()
 	})
 }
 
 func (list *dataList[T, S, L]) RemoveListener(lis binding.DataListener) {
-	list.m.Lock()
-	defer list.m.Unlock()
-
-	cancel := list.lis[lis]
-	if cancel != nil {
-		cancel()
-	}
-	delete(list.lis, lis)
+	list.m.Delete(lis)
 }
 
 func (list *dataList[T, S, L]) GetItem(index int) (binding.DataItem, error) {
