@@ -1,5 +1,7 @@
 package fyner
 
+import "sync"
+
 // State represents a value that can change over time.
 type State[T any] interface {
 	// Listen registers a listener function to be called whenever the
@@ -17,7 +19,8 @@ type Getter[T any] interface {
 	Get() T
 }
 
-// Setter represents a value that can be changed.
+// Setter represents a value that can be changed. Setting a value is
+// thread-safe with reading it.
 type Setter[T any] interface {
 	Set(v T)
 }
@@ -54,10 +57,46 @@ type static[T any] struct {
 // constant, using this type of state is more efficient than a mutable
 // one.
 func Static[T any](v T) State[T] {
-	return static[T]{v}
+	return static[T]{v: v}
 }
 
 func (s static[T]) Listen(listener func(T)) CancelFunc {
 	listener(s.v)
 	return func() {}
+}
+
+func (s static[T]) Get() T {
+	return s.v
+}
+
+type mutable[T any] struct {
+	lis Listenable[T]
+	m   sync.RWMutex
+	v   T
+}
+
+func Mutable[T any](v T) MutableState[T] {
+	return &mutable[T]{v: v}
+}
+
+func (s *mutable[T]) Listen(f func(T)) CancelFunc {
+	id := s.lis.Add(f)
+	return func() {
+		s.lis.Remove(id)
+	}
+}
+
+func (s *mutable[T]) Set(v T) {
+	s.m.Lock()
+	defer s.m.Unlock()
+
+	s.v = v
+	s.lis.Send(v)
+}
+
+func (s *mutable[T]) Get() T {
+	s.m.RLock()
+	defer s.m.RUnlock()
+
+	return s.v
 }
