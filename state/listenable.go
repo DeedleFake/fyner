@@ -1,4 +1,4 @@
-package fyner
+package state
 
 import "sync"
 

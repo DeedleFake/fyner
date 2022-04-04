@@ -1,4 +1,4 @@
-package fyner
+package state
 
 import "sync"
 
@@ -99,4 +99,30 @@ func (s *mutable[T]) Get() T {
 	defer s.m.RUnlock()
 
 	return s.v
+}
+
+type derived[T, F any] struct {
+	from State[F]
+	m    func(F) T
+}
+
+// Derived returns a read-only state that derives its values from
+// another state, passing them through the mapping function m. In
+// other words, when from's value changes, the derived state's
+// listeners will be called with that new value passed through m.
+func Derived[T, F any](from State[F], m func(F) T) State[T] {
+	return derived[T, F]{
+		from: from,
+		m:    m,
+	}
+}
+
+func (s derived[T, F]) Listen(f func(T)) CancelFunc {
+	return s.from.Listen(func(v F) {
+		f(s.m(v))
+	})
+}
+
+func (s derived[T, F]) Get() T {
+	return s.m(Get(s.from))
 }
