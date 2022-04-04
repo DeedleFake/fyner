@@ -6,17 +6,9 @@ import "sync"
 //
 // Listenable's methods are thread-safe.
 type Listenable[T any] struct {
-	once sync.Once
-
 	m   sync.RWMutex
 	id  uint32
 	lis map[uint32]func(T)
-}
-
-func (lis *Listenable[T]) init() {
-	lis.once.Do(func() {
-		lis.lis = make(map[uint32]func(T))
-	})
 }
 
 // Add registers a listener function, returning an ID that can be used
@@ -24,6 +16,10 @@ func (lis *Listenable[T]) init() {
 func (lis *Listenable[T]) Add(f func(T)) uint32 {
 	lis.m.Lock()
 	defer lis.m.Unlock()
+
+	if lis.lis == nil {
+		lis.lis = make(map[uint32]func(T))
+	}
 
 	id := lis.id
 	lis.id++

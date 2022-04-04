@@ -81,6 +81,7 @@ func Mutable[T any](v T) MutableState[T] {
 
 func (s *mutable[T]) Listen(f func(T)) CancelFunc {
 	id := s.lis.Add(f)
+	f(s.v)
 	return func() {
 		s.lis.Remove(id)
 	}
@@ -110,7 +111,7 @@ type derived[T, F any] struct {
 // another state, passing them through the mapping function m. In
 // other words, when from's value changes, the derived state's
 // listeners will be called with that new value passed through m.
-func Derived[T, F any](from State[F], m func(F) T) State[T] {
+func Derived[T, F any, FS State[F]](from FS, m func(F) T) State[T] {
 	return derived[T, F]{
 		from: from,
 		m:    m,
