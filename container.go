@@ -94,13 +94,18 @@ type Box struct {
 
 func (b *Box) init() {
 	b.once.Do(func() {
-		b.c = &Container{
-			Layout: state.Derived(b.Horizontal, func(h bool) fyne.Layout {
+		horizontal := state.Static(layout.NewVBoxLayout())
+		if b.Horizontal != nil {
+			horizontal = state.Derived(b.Horizontal, func(h bool) fyne.Layout {
 				if h {
 					return layout.NewHBoxLayout()
 				}
 				return layout.NewVBoxLayout()
-			}),
+			})
+		}
+
+		b.c = &Container{
+			Layout:   horizontal,
 			Children: b.Children,
 		}
 	})
