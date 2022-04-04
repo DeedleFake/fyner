@@ -172,7 +172,7 @@ func (b *Border) init() {
 
 		b.c = &Container{
 			Layout:   state.Static(layout.NewBorderLayout(top, bottom, left, right)),
-			Children: []Component{b.Center},
+			Children: []Component{b.Top, b.Bottom, b.Left, b.Right, b.Center},
 		}
 	})
 }
