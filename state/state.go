@@ -33,8 +33,13 @@ type MutableState[T any] interface {
 	Setter[T]
 }
 
-// Get returns the current value of a given state.
+// Get returns the current value of a given state. If the state passed
+// is nil, it returns the zero-value of T.
 func Get[T any](s State[T]) (v T) {
+	if s == nil {
+		return v
+	}
+
 	if g, ok := s.(Getter[T]); ok {
 		return g.Get()
 	}
