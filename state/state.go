@@ -127,3 +127,36 @@ func (s derived[T, F]) Listen(f func(T)) CancelFunc {
 func (s derived[T, F]) Get() T {
 	return s.m(Get(s.from))
 }
+
+type mutator[T, F any] struct {
+	from MutableState[F]
+	gm   func(F) T
+	sm   func(T) F
+}
+
+// Mutator returns a mutable derived state. Like Derived, the returned
+// state runs successive values through mapGet, but it can also be set
+// and, when set, runs the new value through mapSet before setting the
+// underlying state.
+func Mutator[T, F any, FS MutableState[F]](from FS, mapGet func(F) T, mapSet func(T) F) MutableState[T] {
+	return mutator[T, F]{
+		from: from,
+		gm:   mapGet,
+		sm:   mapSet,
+	}
+}
+
+func (s mutator[T, F]) Listen(f func(T)) CancelFunc {
+	return s.from.Listen(func(v F) {
+		f(s.gm(v))
+	})
+}
+
+func (s mutator[T, F]) Set(v T) {
+	s.from.Set(s.sm(v))
+}
+
+func (s mutator[T, F]) Get() T {
+	// Is this type inference limitation intentional? It seems odd.
+	return s.gm(Get(State[F](s.from)))
+}
