@@ -13,9 +13,9 @@ type State[T any] interface {
 	Listen(func(T)) CancelFunc
 }
 
-// Getter is an optional interface defined by States to allow for
+// getter is an optional interface defined by States to allow for
 // quicker one-time fetching of their current value.
-type Getter[T any] interface {
+type getter[T any] interface {
 	Get() T
 }
 
@@ -35,12 +35,15 @@ type MutableState[T any] interface {
 
 // Get returns the current value of a given state. If the state passed
 // is nil, it returns the zero-value of T.
+//
+// If the state passed has a Get method that returns a single value of
+// type T, the return of that method is returned.
 func Get[T any](s State[T]) (v T) {
 	if s == nil {
 		return v
 	}
 
-	if g, ok := s.(Getter[T]); ok {
+	if g, ok := s.(getter[T]); ok {
 		return g.Get()
 	}
 
