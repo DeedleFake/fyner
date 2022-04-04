@@ -29,12 +29,8 @@ func (entry *Entry) init() {
 }
 
 func (entry *Entry) bind() {
-	entry.textCancel = entry.Text.Listen(func(v string) {
-		entry.w.SetText(v)
-	})
-	entry.w.OnChanged = func(v string) {
-		entry.Text.Set(v)
-	}
+	entry.textCancel = entry.Text.Listen(entry.w.SetText)
+	entry.w.OnChanged = entry.Text.Set
 }
 
 func (entry *Entry) CanvasObject() fyne.CanvasObject {

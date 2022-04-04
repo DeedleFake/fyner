@@ -27,9 +27,7 @@ func (label *Label) init() {
 
 func (label *Label) bind() {
 	if label.Text != nil {
-		label.textCancel = label.Text.Listen(func(v string) {
-			label.w.SetText(v)
-		})
+		label.textCancel = label.Text.Listen(label.w.SetText)
 	}
 }
 
