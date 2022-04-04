@@ -139,3 +139,33 @@ func (b *Box) CanvasObject() fyne.CanvasObject {
 //func (b *Box) Unbind() {
 //	b.c.Unbind()
 //}
+
+type Border struct {
+	once sync.Once
+	c    *Container
+
+	Top    Component
+	Bottom Component
+	Left   Component
+	Right  Component
+	Center Component
+}
+
+func (b *Border) init() {
+	b.once.Do(func() {
+		b.c = &Container{
+			Layout: state.Static(layout.NewBorderLayout(
+				b.Top.CanvasObject(),
+				b.Bottom.CanvasObject(),
+				b.Left.CanvasObject(),
+				b.Right.CanvasObject(),
+			)),
+			Children: []Component{b.Center},
+		}
+	})
+}
+
+func (b *Border) CanvasObject() fyne.CanvasObject {
+	b.init()
+	return b.c.CanvasObject()
+}
