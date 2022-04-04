@@ -1,4 +1,4 @@
-fyner
+Fyner
 =====
 
 Fyner is an attempt to create an entirely new API for building UIs with [Fyne][fyne] that is more declarative. It takes some inspiration from Flutter in terms of the API design, but has a lot of its own ideas as well.
