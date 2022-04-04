@@ -153,13 +153,22 @@ type Border struct {
 
 func (b *Border) init() {
 	b.once.Do(func() {
+		var top, bottom, left, right fyne.CanvasObject
+		if b.Top != nil {
+			top = b.Top.CanvasObject()
+		}
+		if b.Bottom != nil {
+			bottom = b.Bottom.CanvasObject()
+		}
+		if b.Left != nil {
+			left = b.Bottom.CanvasObject()
+		}
+		if b.Right != nil {
+			right = b.Bottom.CanvasObject()
+		}
+
 		b.c = &Container{
-			Layout: state.Static(layout.NewBorderLayout(
-				b.Top.CanvasObject(),
-				b.Bottom.CanvasObject(),
-				b.Left.CanvasObject(),
-				b.Right.CanvasObject(),
-			)),
+			Layout:   state.Static(layout.NewBorderLayout(top, bottom, left, right)),
 			Children: []Component{b.Center},
 		}
 	})
