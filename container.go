@@ -20,6 +20,9 @@ type Container struct {
 
 	// Children is the children in the container. They are displayed
 	// according to the value of Layout.
+	//
+	// TODO: Make this stateful? Alternatively, add a special component
+	// that can remove a child from a container?
 	Children []Component
 }
 
