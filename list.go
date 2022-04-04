@@ -22,8 +22,7 @@ type List[E any, C Component] struct {
 
 func (list *List[E, C]) init() {
 	list.once.Do(func() {
-		unbound := make(map[fyne.CanvasObject]C)
-		bound := make(map[fyne.CanvasObject]C)
+		components := make(map[fyne.CanvasObject]C)
 
 		// TODO: Move this into Bind().
 		list.w = widget.NewListWithData(
@@ -31,14 +30,15 @@ func (list *List[E, C]) init() {
 			func() fyne.CanvasObject {
 				n := list.Builder()
 				co := n.CanvasObject()
-				unbound[co] = n
+				components[co] = n
 				return co
 			},
 			func(b binding.DataItem, o fyne.CanvasObject) {
-				n := unbound[o]
-				delete(unbound, o)
+				n := components[o]
+				n.Unbind()
 				list.Binder(state.FromBinding[E](b.(state.Binding[E])), n)
-				bound[o] = n
+				n.Bind()
+				components[o] = n
 			},
 		)
 	})
