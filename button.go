@@ -17,6 +17,10 @@ type Button struct {
 	Text       state.State[string]
 	textCancel state.CancelFunc
 
+	// Disabled, if true, disables the button, prevening input.
+	Disabled       state.State[bool]
+	disabledCancel state.CancelFunc
+
 	// OnTapped is called when the button is tapped/clicked on.
 	OnTapped func()
 }
@@ -30,8 +34,16 @@ func (button *Button) init() {
 
 func (button *Button) bind() {
 	if button.Text != nil {
-		button.textCancel = button.Text.Listen(func(v string) {
-			button.w.SetText(v)
+		button.textCancel = button.Text.Listen(button.w.SetText)
+	}
+
+	if button.Disabled != nil {
+		button.disabledCancel = button.Disabled.Listen(func(disabled bool) {
+			if disabled {
+				button.w.Disable()
+				return
+			}
+			button.w.Enable()
 		})
 	}
 }
