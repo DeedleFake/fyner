@@ -38,6 +38,8 @@ func (lis *Listenable[T]) Remove(id uint32) {
 
 // Send calls all of the registered listener functions with the given
 // value. It does not return until all of the registered functions do.
+//
+// TODO: Don't send to the listener that triggered the send?
 func (lis *Listenable[T]) Send(v T) {
 	lis.m.RLock()
 	defer lis.m.RUnlock()
