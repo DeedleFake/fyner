@@ -5,7 +5,7 @@ import (
 
 	"fyne.io/fyne/v2/app"
 	"github.com/DeedleFake/fyner"
-	"github.com/DeedleFake/fyner/state"
+	"github.com/DeedleFake/state"
 )
 
 func main() {

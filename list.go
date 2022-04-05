@@ -7,7 +7,8 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/widget"
-	"github.com/DeedleFake/fyner/state"
+	"github.com/DeedleFake/fyner/fstate"
+	"github.com/DeedleFake/state"
 )
 
 type List[E any, C Component] struct {
@@ -29,7 +30,7 @@ func (list *List[E, C]) init() {
 
 		// TODO: Move this into Bind().
 		list.w = widget.NewListWithData(
-			state.ToListBinding[E](list.Items),
+			fstate.ToListBinding[E](list.Items),
 			func() fyne.CanvasObject {
 				n := deepZero[C]()
 				co := n.CanvasObject()
@@ -39,7 +40,7 @@ func (list *List[E, C]) init() {
 			func(b binding.DataItem, o fyne.CanvasObject) {
 				n := components[o]
 				n.Unbind()
-				list.Binder(state.FromBinding[E](b.(state.Binding[E])), n)
+				list.Binder(fstate.FromBinding[E](b.(fstate.Binding[E])), n)
 				n.Bind()
 			},
 		)

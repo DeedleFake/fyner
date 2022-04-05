@@ -1,10 +1,11 @@
-package state
+package fstate
 
 import (
 	"errors"
 	"sync"
 
 	"fyne.io/fyne/v2/data/binding"
+	"github.com/DeedleFake/state"
 )
 
 // Binding represents a generic Fyne data binding.
@@ -21,11 +22,11 @@ type fromBinding[T any] struct {
 // FromBinding returns a state that defers to a Fyne data binding.
 //
 // TODO: Handle errors somehow.
-func FromBinding[T any, B Binding[T]](b B) MutableState[T] {
+func FromBinding[T any, B Binding[T]](b B) state.MutableState[T] {
 	return fromBinding[T]{b: b}
 }
 
-func (b fromBinding[T]) Listen(f func(T)) CancelFunc {
+func (b fromBinding[T]) Listen(f func(T)) state.CancelFunc {
 	lis := binding.NewDataListener(func() {
 		f(b.Get())
 	})
@@ -48,12 +49,12 @@ func (b fromBinding[T]) Get() T {
 }
 
 type dataItem[T any] struct {
-	s State[T]
+	s state.State[T]
 	m sync.Map
 }
 
-// ToBinding creates a Binding from a State.
-func ToBinding[T any](s State[T]) Binding[T] {
+// ToBinding creates a Binding from a state.State.
+func ToBinding[T any](s state.State[T]) Binding[T] {
 	return &dataItem[T]{
 		s: s,
 	}
@@ -70,24 +71,24 @@ func (item *dataItem[T]) RemoveListener(lis binding.DataListener) {
 }
 
 func (item *dataItem[T]) Get() (T, error) {
-	return Get(item.s), nil
+	return state.Get(item.s), nil
 }
 
 func (item *dataItem[T]) Set(v T) error {
-	if s, ok := item.s.(Setter[T]); ok {
+	if s, ok := item.s.(state.Setter[T]); ok {
 		s.Set(v)
 	}
 	return nil
 }
 
-type dataList[T any, S State[T], L ~[]S] struct {
-	s State[L]
+type dataList[T any, S state.State[T], L ~[]S] struct {
+	s state.State[L]
 	m sync.Map
 }
 
-// ToListBinding creates a binding.DataList from a State containing a
+// ToListBinding creates a binding.DataList from a state.State containing a
 // slice of States.
-func ToListBinding[T any, S State[T], L ~[]S](s State[L]) binding.DataList {
+func ToListBinding[T any, S state.State[T], L ~[]S](s state.State[L]) binding.DataList {
 	return &dataList[T, S, L]{
 		s: s,
 	}
@@ -104,7 +105,7 @@ func (list *dataList[T, S, L]) RemoveListener(lis binding.DataListener) {
 }
 
 func (list *dataList[T, S, L]) GetItem(index int) (binding.DataItem, error) {
-	s := Get(list.s)
+	s := state.Get(list.s)
 	if (index < 0) || (index >= len(s)) {
 		return nil, errors.New("index out of range")
 	}
@@ -113,5 +114,5 @@ func (list *dataList[T, S, L]) GetItem(index int) (binding.DataItem, error) {
 }
 
 func (list *dataList[T, S, L]) Length() int {
-	return len(Get(list.s))
+	return len(state.Get(list.s))
 }

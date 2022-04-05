@@ -5,7 +5,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
-	"github.com/DeedleFake/fyner/state"
+	"github.com/DeedleFake/state"
 )
 
 // Icon wraps widget.Icon to provide a component that displays images.

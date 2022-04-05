@@ -6,7 +6,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
-	"github.com/DeedleFake/fyner/state"
+	"github.com/DeedleFake/state"
 )
 
 // Container wraps fyne.Container to provide a container component.

@@ -5,7 +5,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
-	"github.com/DeedleFake/fyner/state"
+	"github.com/DeedleFake/state"
 )
 
 // Entry wraps widget.Entry to provide a text entry component.

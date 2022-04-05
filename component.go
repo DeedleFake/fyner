@@ -2,7 +2,7 @@ package fyner
 
 import (
 	"fyne.io/fyne/v2"
-	"github.com/DeedleFake/fyner/state"
+	"github.com/DeedleFake/state"
 )
 
 // Component is the interface shared by all Fyner components.
