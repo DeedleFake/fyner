@@ -61,7 +61,7 @@ func (list *List[E, C]) Unbind() {
 }
 
 func deepZero[T any]() (v T) {
-	t := reflect.TypeOf(v)
+	t := reflect.TypeOf(&v).Elem()
 	if t.Kind() != reflect.Pointer {
 		return v
 	}
