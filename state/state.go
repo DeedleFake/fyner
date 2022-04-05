@@ -168,3 +168,47 @@ func (s mutator[T, F]) Get() T {
 	// Is this type inference limitation intentional? It seems odd.
 	return s.gm(Get[F](s.from))
 }
+
+type uniq[T any] struct {
+	from  State[T]
+	equal func(T, T) bool
+}
+
+// Uniq returns a State that wraps from. Listeners of the returned
+// state will only see the first of successive values that are equal
+// to each other, similar to the Unix uniq command.
+func Uniq[T comparable, S State[T]](from S) State[T] {
+	return uniq[T]{
+		from: from,
+		equal: func(v1, v2 T) bool {
+			return v1 == v2
+		},
+	}
+}
+
+// UniqFunc is like Uniq, but uses a custom comparison function to
+// determine equality.
+func UniqFunc[T any, S State[T]](from S, equal func(T, T) bool) State[T] {
+	return uniq[T]{
+		from:  from,
+		equal: equal,
+	}
+}
+
+func (u uniq[T]) Listen(f func(T)) CancelFunc {
+	var prev T
+	var ok bool
+	return u.from.Listen(func(v T) {
+		if ok && u.equal(v, prev) {
+			return
+		}
+
+		prev = v
+		ok = true
+		f(v)
+	})
+}
+
+func (u uniq[T]) Get() T {
+	return Get(u.from)
+}
