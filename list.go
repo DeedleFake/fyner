@@ -4,11 +4,11 @@ import (
 	"reflect"
 	"sync"
 
+	"deedles.dev/fyner/fstate"
+	"deedles.dev/state"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/widget"
-	"github.com/DeedleFake/fyner/fstate"
-	"github.com/DeedleFake/state"
 )
 
 type List[E any, C Component] struct {

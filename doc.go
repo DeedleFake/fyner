@@ -35,9 +35,9 @@
 //    package main
 //
 //    import (
+//    	"deedles.dev/fyner"
+//    	"deedles.dev/fyner/state"
 //    	"fyne.io/fyne/v2/app"
-//    	"github.com/DeedleFake/fyner"
-//    	"github.com/DeedleFake/fyner/state"
 //    )
 //
 //    func main() {

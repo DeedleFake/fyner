@@ -1,6 +1,6 @@
 package fstate
 
-import "github.com/DeedleFake/state"
+import "deedles.dev/state"
 
 // ToSliceOfStates returns a state derived from s that wraps each
 // element in a state.Static. This is useful for, for example, simple

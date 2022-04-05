@@ -1,7 +1,7 @@
 Fyner
 =====
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/DeedleFake/fyner.svg)](https://pkg.go.dev/github.com/DeedleFake/fyner)
+[![Go Reference](https://pkg.go.dev/badge/deedles.dev/fyner.svg)](https://pkg.go.dev/deedles.dev/fyner)
 
 Fyner is an attempt to create an entirely new API for building UIs with [Fyne][fyne] that is more declarative. It takes some inspiration from Flutter in terms of the API design, but has a lot of its own ideas as well.
 

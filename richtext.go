@@ -3,9 +3,9 @@ package fyner
 import (
 	"sync"
 
+	"deedles.dev/state"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
-	"github.com/DeedleFake/state"
 )
 
 // RichText wraps widget.RichText to provide a component for

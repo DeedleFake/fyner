@@ -3,9 +3,9 @@ package main
 import (
 	"strings"
 
+	"deedles.dev/fyner"
+	"deedles.dev/state"
 	"fyne.io/fyne/v2/app"
-	"github.com/DeedleFake/fyner"
-	"github.com/DeedleFake/state"
 )
 
 func main() {

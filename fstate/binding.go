@@ -4,8 +4,8 @@ import (
 	"errors"
 	"sync"
 
+	"deedles.dev/state"
 	"fyne.io/fyne/v2/data/binding"
-	"github.com/DeedleFake/state"
 )
 
 // Binding represents a generic Fyne data binding.

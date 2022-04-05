@@ -1,10 +1,10 @@
-module github.com/DeedleFake/fyner
+module deedles.dev/fyner
 
 go 1.18
 
 require (
+	deedles.dev/state v0.1.1
 	fyne.io/fyne/v2 v2.1.4
-	github.com/DeedleFake/state v0.0.0-20220405141257-1ca5859a81c0
 )
 
 require (
@@ -22,7 +22,7 @@ require (
 	github.com/yuin/goldmark v1.4.11 // indirect
 	golang.org/x/image v0.0.0-20220321031419-a8550c1d254a // indirect
 	golang.org/x/net v0.0.0-20220403103023-749bd193bc2b // indirect
-	golang.org/x/sys v0.0.0-20220403205710-6acee93ad0eb // indirect
+	golang.org/x/sys v0.0.0-20220405052023-b1e9470b6e64 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
