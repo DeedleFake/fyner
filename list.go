@@ -1,6 +1,7 @@
 package fyner
 
 import (
+	"reflect"
 	"sync"
 
 	"fyne.io/fyne/v2"
@@ -16,8 +17,7 @@ type List[E any, C Component] struct {
 	Items       state.State[[]state.State[E]]
 	itemsCancel state.CancelFunc
 
-	Builder func() C
-	Binder  func(state.State[E], C)
+	Binder func(state.State[E], C)
 }
 
 func (list *List[E, C]) init() {
@@ -31,7 +31,7 @@ func (list *List[E, C]) init() {
 		list.w = widget.NewListWithData(
 			state.ToListBinding[E](list.Items),
 			func() fyne.CanvasObject {
-				n := list.Builder()
+				n := deepZero[C]()
 				co := n.CanvasObject()
 				components[co] = n
 				return co
@@ -57,4 +57,12 @@ func (list *List[E, C]) Bind() {
 }
 
 func (list *List[E, C]) Unbind() {
+}
+
+func deepZero[T any]() (v T) {
+	t := reflect.TypeOf(v)
+	if t.Kind() != reflect.Pointer {
+		return v
+	}
+	return reflect.New(t.Elem()).Interface().(T)
 }
